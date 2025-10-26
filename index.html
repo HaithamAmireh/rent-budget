@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartment Budget Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 {
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .expense-item:last-child {
+            border-bottom: none;
+        }
+
+        .expense-item.total {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #667eea;
+            border-top: 2px solid #667eea;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .savings-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .savings-highlight h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .savings-highlight .amount {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .savings-highlight .subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .recommendation {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .recommendation h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .recommendation p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .print-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .print-btn:hover {
+            background: #5568d3;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .print-btn {
+                display: none;
+            }
+            .input-section {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .savings-highlight .amount {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Apartment Budget Calculator</h1>
+            <p>Plan your finances wisely</p>
+        </div>
+
+        <div class="content">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2 style="margin-bottom: 20px; color: #667eea;">📊 Enter Your Information</h2>
+                
+                <div class="two-column">
+                    <div class="input-group">
+                        <label>Monthly Salary (JOD)</label>
+                        <input type="number" id="salary" value="1725" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Monthly Rent (JOD)</label>
+                        <input type="number" id="rent" value="400" oninput="calculate()">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; margin-bottom: 15px; color: #555;">Monthly Expenses</h3>
+                
+                <div class="two-column">
+                    <div class="input-group">
+                        <label>Bills (Electric, Wifi, Gas)</label>
+                        <input type="number" id="bills" value="110" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Subscriptions</label>
+                        <input type="number" id="subscriptions" value="26" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Food & Groceries</label>
+                        <input type="number" id="food" value="70" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Phone Bill</label>
+                        <input type="number" id="phone" value="12" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Social/Going Out</label>
+                        <input type="number" id="social" value="30" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Haircut</label>
+                        <input type="number" id="haircut" value="11" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Jam'iya (Rotating Savings)</label>
+                        <input type="number" id="jamiya" value="500" oninput="calculate()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Emergency Fund (Current)</label>
+                        <input type="number" id="emergencyFund" value="4000" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="card">
+                <h2>💵 Monthly Budget Breakdown</h2>
+                
+                <div class="expense-item">
+                    <span>Monthly Income</span>
+                    <strong id="display-income">1,725 JOD</strong>
+                </div>
+                
+                <h3>Expenses:</h3>
+                <div class="expense-item">
+                    <span>Bills</span>
+                    <span id="display-bills">110 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Subscriptions</span>
+                    <span id="display-subscriptions">26 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Food & Groceries</span>
+                    <span id="display-food">70 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Phone</span>
+                    <span id="display-phone">12 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Social</span>
+                    <span id="display-social">30 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Haircut</span>
+                    <span id="display-haircut">11 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Jam'iya</span>
+                    <span id="display-jamiya">500 JOD</span>
+                </div>
+                <div class="expense-item">
+                    <span>Rent</span>
+                    <span id="display-rent">400 JOD</span>
+                </div>
+                
+                <div class="expense-item total">
+                    <span>Total Expenses</span>
+                    <span id="display-total-expenses">1,159 JOD</span>
+                </div>
+            </div>
+
+            <!-- Savings Highlight -->
+            <div class="savings-highlight">
+                <h3>Monthly Savings</h3>
+                <div class="amount" id="monthly-savings">566 JOD</div>
+                <div class="subtitle">Savings Rate: <span id="savings-rate">33%</span></div>
+            </div>
+
+            <!-- Projections -->
+            <div class="card">
+                <h2>📈 Savings Projections</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th class="text-right">Amount (JOD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Annual Savings</strong></td>
+                            <td class="text-right"><strong id="annual-savings">6,792</strong></td>
+                        </tr>
+                        <tr>
+                            <td>2-Year Savings</td>
+                            <td class="text-right" id="two-year-savings">13,584</td>
+                        </tr>
+                        <tr>
+                            <td>4-Year Savings</td>
+                            <td class="text-right" id="four-year-savings">27,168</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total (with Emergency Fund)</strong></td>
+                            <td class="text-right"><strong id="total-with-fund">31,168</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Year by Year -->
+            <div class="card">
+                <h2>📅 Year-by-Year Breakdown</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th class="text-right">Annual Savings</th>
+                            <th class="text-right">Cumulative</th>
+                            <th class="text-right">With Emergency Fund</th>
+                        </tr>
+                    </thead>
+                    <tbody id="yearly-breakdown">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recommendation -->
+            <div class="recommendation">
+                <h3>💡 Financial Tip</h3>
+                <p id="recommendation-text">
+                    With your current budget, you're saving 33% of your income - that's excellent! 
+                    This gives you financial security while still contributing to jam'iya and supporting your family.
+                </p>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="print-btn" onclick="window.print()">🖨️ Print Budget</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Get values
+            const salary = parseFloat(document.getElementById('salary').value) || 0;
+            const rent = parseFloat(document.getElementById('rent').value) || 0;
+            const bills = parseFloat(document.getElementById('bills').value) || 0;
+            const subscriptions = parseFloat(document.getElementById('subscriptions').value) || 0;
+            const food = parseFloat(document.getElementById('food').value) || 0;
+            const phone = parseFloat(document.getElementById('phone').value) || 0;
+            const social = parseFloat(document.getElementById('social').value) || 0;
+            const haircut = parseFloat(document.getElementById('haircut').value) || 0;
+            const jamiya = parseFloat(document.getElementById('jamiya').value) || 0;
+            const emergencyFund = parseFloat(document.getElementById('emergencyFund').value) || 0;
+
+            // Calculate totals
+            const totalExpenses = bills + subscriptions + food + phone + social + haircut + jamiya + rent;
+            const monthlySavings = salary - totalExpenses;
+            const savingsRate = salary > 0 ? ((monthlySavings / salary) * 100).toFixed(1) : 0;
+            const annualSavings = monthlySavings * 12;
+            const twoYearSavings = monthlySavings * 24;
+            const fourYearSavings = monthlySavings * 48;
+            const totalWithFund = fourYearSavings + emergencyFund;
+
+            // Update display
+            document.getElementById('display-income').textContent = salary.toLocaleString() + ' JOD';
+            document.getElementById('display-bills').textContent = bills + ' JOD';
+            document.getElementById('display-subscriptions').textContent = subscriptions + ' JOD';
+            document.getElementById('display-food').textContent = food + ' JOD';
+            document.getElementById('display-phone').textContent = phone + ' JOD';
+            document.getElementById('display-social').textContent = social + ' JOD';
+            document.getElementById('display-haircut').textContent = haircut + ' JOD';
+            document.getElementById('display-jamiya').textContent = jamiya + ' JOD';
+            document.getElementById('display-rent').textContent = rent + ' JOD';
+            document.getElementById('display-total-expenses').textContent = totalExpenses.toLocaleString() + ' JOD';
+            
+            document.getElementById('monthly-savings').textContent = monthlySavings.toLocaleString() + ' JOD';
+            document.getElementById('savings-rate').textContent = savingsRate + '%';
+            document.getElementById('annual-savings').textContent = annualSavings.toLocaleString();
+            document.getElementById('two-year-savings').textContent = twoYearSavings.toLocaleString();
+            document.getElementById('four-year-savings').textContent = fourYearSavings.toLocaleString();
+            document.getElementById('total-with-fund').textContent = totalWithFund.toLocaleString();
+
+            // Year by year breakdown
+            let yearlyHTML = '';
+            for (let year = 1; year <= 4; year++) {
+                const cumulative = monthlySavings * 12 * year;
+                const withFund = cumulative + emergencyFund;
+                yearlyHTML += `
+                    <tr>
+                        <td>Year ${year}</td>
+                        <td class="text-right">${annualSavings.toLocaleString()}</td>
+                        <td class="text-right">${cumulative.toLocaleString()}</td>
+                        <td class="text-right">${withFund.toLocaleString()}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById('yearly-breakdown').innerHTML = yearlyHTML;
+
+            // Update recommendation
+            let recommendation = '';
+            if (savingsRate >= 30) {
+                recommendation = `Excellent! You're saving ${savingsRate}% of your income. This is a very healthy savings rate that will build significant wealth over time.`;
+            } else if (savingsRate >= 20) {
+                recommendation = `Good job! You're saving ${savingsRate}% of your income. This is a solid savings rate. Consider ways to increase it further if possible.`;
+            } else if (savingsRate >= 10) {
+                recommendation = `You're saving ${savingsRate}% of your income. This is okay, but try to increase your savings rate by reducing expenses or increasing income.`;
+            } else if (savingsRate > 0) {
+                recommendation = `You're only saving ${savingsRate}% of your income. Consider reducing expenses or finding ways to increase your income.`;
+            } else {
+                recommendation = `Warning: Your expenses exceed your income by ${Math.abs(monthlySavings).toLocaleString()} JOD/month. You need to reduce expenses or increase income urgently.`;
+            }
+            document.getElementById('recommendation-text').textContent = recommendation;
+        }
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
