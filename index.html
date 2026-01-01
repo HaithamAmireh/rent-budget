@@ -392,7 +392,7 @@
                 <div class="two-column">
                     <div class="input-group">
                         <label>Monthly Salary (JOD)</label>
-                        <input type="number" id="salary" value="0" oninput="calculate()">
+                        <input type="number" id="salary" value="1725" oninput="calculate()">
                     </div>
                     
                     <div class="input-group" id="rent-input">
@@ -401,9 +401,9 @@
                     </div>
 
                     <!-- Buy Inputs -->
-                    <div class="input-group hidden" id="house-price-input">
+                    <div class="input-group">
                         <label>House Price (JOD)</label>
-                        <input type="number" id="housePrice" value="100000" oninput="calculate()">
+                        <input type="number" id="housePrice" value="60000" oninput="calculate()">
                     </div>
                 </div>
 
@@ -421,7 +421,7 @@
                         </div>
                         <div class="input-group">
                             <label>Loan Term (Years)</label>
-                            <input type="number" id="loanTerm" value="15" oninput="calculate()">
+                            <input type="number" id="loanTerm" value="10" oninput="calculate()">
                         </div>
                         <div class="input-group">
                             <label>Monthly Maintenance (JOD)</label>
@@ -749,13 +749,10 @@
         }
 
         function calculateMortgage(principal, annualRate, years) {
-            const monthlyRate = annualRate / 100 / 12;
-            const numPayments = years * 12;
-            
-            if (monthlyRate === 0) return principal / numPayments;
-            
-            const monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
-                                  (Math.pow(1 + monthlyRate, numPayments) - 1);
+            // Flat/Simple interest calculation (Islamic banking style)
+            const totalInterest = principal * (annualRate / 100) * years;
+            const totalAmount = principal + totalInterest;
+            const monthlyPayment = totalAmount / (years * 12);
             return monthlyPayment;
         }
 
@@ -805,8 +802,8 @@
             // BUY CALCULATIONS
             const housePrice = parseFloat(document.getElementById('housePrice').value) || 0;
             const downPaymentPercent = parseFloat(document.getElementById('downPaymentPercent').value) || 25;
-            const interestRate = parseFloat(document.getElementById('interestRate').value) || 7;
-            const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 20;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 4.25;
+            const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 10;
             const maintenance = parseFloat(document.getElementById('maintenance').value) || 70;
             
             const downPayment = housePrice * (downPaymentPercent / 100);
@@ -823,11 +820,9 @@
             const savingsRateBuy = salary > 0 ? ((monthlySavingsBuy / salary) * 100).toFixed(1) : 0;
             const housingRatio = salary > 0 ? ((housingCost / salary) * 100).toFixed(1) : 0;
             
-            // Equity calculation (simplified - principal paid in 4 years)
-            const totalPayments48 = monthlyMortgage * 48;
-            const remainingBalance = loanAmount;
-            // Approximate equity after 4 years (this is simplified)
-            const principalPaid = downPayment + (totalPayments48 * 0.35); // rough estimate
+            // Equity calculation - after 5 years
+            const totalPayments60 = monthlyMortgage * 60;
+            const principalPaid = downPayment + (totalPayments60 * 0.35); // approximate
             
             // Update buy displays
             document.getElementById('display-house-price').textContent = housePrice.toLocaleString() + ' JOD';
