@@ -392,7 +392,7 @@
                 <div class="two-column">
                     <div class="input-group">
                         <label>Monthly Salary (JOD)</label>
-                        <input type="number" id="salary" value="1725" oninput="calculate()">
+                        <input type="number" id="salary" value="0" oninput="calculate()">
                     </div>
                     
                     <div class="input-group" id="rent-input">
@@ -512,7 +512,8 @@
                 </div>
 
                 <div class="card">
-                    <h2>📈 Savings Projections (Renting)</h2>
+                    <h2>📈 SAVINGS PROJECTIONS</h2>
+                    
                     <table>
                         <thead>
                             <tr>
@@ -526,12 +527,28 @@
                                 <td class="text-right"><strong id="annual-savings-rent">6,792</strong></td>
                             </tr>
                             <tr>
+                                <td>1-Year Savings</td>
+                                <td class="text-right" id="one-year-savings-rent">6,792</td>
+                            </tr>
+                            <tr>
+                                <td>2-Year Savings</td>
+                                <td class="text-right" id="two-year-savings-rent">13,584</td>
+                            </tr>
+                            <tr>
+                                <td>3-Year Savings</td>
+                                <td class="text-right" id="three-year-savings-rent">20,376</td>
+                            </tr>
+                            <tr>
                                 <td>4-Year Savings</td>
                                 <td class="text-right" id="four-year-savings-rent">27,168</td>
                             </tr>
                             <tr>
+                                <td>5-Year Savings</td>
+                                <td class="text-right" id="five-year-savings-rent">33,960</td>
+                            </tr>
+                            <tr>
                                 <td><strong>Total (with Emergency Fund)</strong></td>
-                                <td class="text-right"><strong id="total-with-fund-rent">31,168</strong></td>
+                                <td class="text-right"><strong id="total-with-fund-rent">37,960</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -665,8 +682,8 @@
                                 <strong id="comp-rent-savings">566 JOD</strong>
                             </div>
                             <div class="expense-item">
-                                <span>4-Year Cash Saved</span>
-                                <strong id="comp-rent-4year">31,168 JOD</strong>
+                                <span>5-Year Cash Saved</span>
+                                <strong id="comp-rent-4year">37,960 JOD</strong>
                             </div>
                             <div class="expense-item">
                                 <span>Equity Built</span>
@@ -685,11 +702,11 @@
                                 <strong id="comp-buy-savings">315 JOD</strong>
                             </div>
                             <div class="expense-item">
-                                <span>4-Year Cash Saved</span>
+                                <span>5-Year Cash Saved</span>
                                 <strong id="comp-buy-4year">19,120 JOD</strong>
                             </div>
                             <div class="expense-item">
-                                <span>Equity Built (4 years)</span>
+                                <span>Equity Built (5 years)</span>
                                 <strong id="comp-equity">32,000 JOD</strong>
                             </div>
                         </div>
@@ -762,8 +779,12 @@
             const monthlySavingsRent = salary - totalExpensesRent;
             const savingsRateRent = salary > 0 ? ((monthlySavingsRent / salary) * 100).toFixed(1) : 0;
             const annualSavingsRent = monthlySavingsRent * 12;
+            const oneYearSavingsRent = monthlySavingsRent * 12;
+            const twoYearSavingsRent = monthlySavingsRent * 24;
+            const threeYearSavingsRent = monthlySavingsRent * 36;
             const fourYearSavingsRent = monthlySavingsRent * 48;
-            const totalWithFundRent = fourYearSavingsRent + emergencyFund;
+            const fiveYearSavingsRent = monthlySavingsRent * 60;
+            const totalWithFundRent = fiveYearSavingsRent + emergencyFund;
             
             // Update rent displays
             document.getElementById('display-income-rent').textContent = salary.toLocaleString() + ' JOD';
@@ -774,7 +795,11 @@
             document.getElementById('monthly-savings-rent').textContent = monthlySavingsRent.toLocaleString() + ' JOD';
             document.getElementById('savings-rate-rent').textContent = savingsRateRent + '%';
             document.getElementById('annual-savings-rent').textContent = annualSavingsRent.toLocaleString();
+            document.getElementById('one-year-savings-rent').textContent = oneYearSavingsRent.toLocaleString();
+            document.getElementById('two-year-savings-rent').textContent = twoYearSavingsRent.toLocaleString();
+            document.getElementById('three-year-savings-rent').textContent = threeYearSavingsRent.toLocaleString();
             document.getElementById('four-year-savings-rent').textContent = fourYearSavingsRent.toLocaleString();
+            document.getElementById('five-year-savings-rent').textContent = fiveYearSavingsRent.toLocaleString();
             document.getElementById('total-with-fund-rent').textContent = totalWithFundRent.toLocaleString();
             
             // BUY CALCULATIONS
@@ -845,8 +870,8 @@
             }
             
             // COMPARISON CALCULATIONS
-            const fourYearSavingsBuy = monthlySavingsBuy * 48;
-            const totalWithFundBuy = fourYearSavingsBuy + emergencyFund;
+            const fiveYearSavingsBuy = monthlySavingsBuy * 60;
+            const totalWithFundBuy = fiveYearSavingsBuy + emergencyFund;
             
             document.getElementById('comp-rent-cost').textContent = rent + ' JOD';
             document.getElementById('comp-rent-savings').textContent = monthlySavingsRent.toLocaleString() + ' JOD';
@@ -873,7 +898,7 @@
             } else {
                 const netWealth = principalPaid + totalWithFundBuy;
                 buyCard.classList.add('winner');
-                recommendation = `Buying could work at this price point. After 4 years, you'll have built ${Math.round(principalPaid).toLocaleString()} JOD in equity plus ${totalWithFundBuy.toLocaleString()} JOD in savings (total: ${Math.round(netWealth).toLocaleString()} JOD). Your housing ratio of ${housingRatio}% is ${housingRatio <= 35 ? 'healthy' : 'slightly high but manageable'}.`;
+                recommendation = `Buying could work at this price point. After 5 years, you'll have built ${Math.round(principalPaid).toLocaleString()} JOD in equity plus ${totalWithFundBuy.toLocaleString()} JOD in savings (total: ${Math.round(netWealth).toLocaleString()} JOD). Your housing ratio of ${housingRatio}% is ${housingRatio <= 35 ? 'healthy' : 'slightly high but manageable'}.`;
             }
             
             document.getElementById('comparison-recommendation').textContent = recommendation;
