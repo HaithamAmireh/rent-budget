@@ -401,7 +401,7 @@
                     </div>
 
                     <!-- Buy Inputs -->
-                    <div class="input-group">
+                    <div class="input-group hidden" id="house-price-input">
                         <label>House Price (JOD)</label>
                         <input type="number" id="housePrice" value="60000" oninput="calculate()">
                     </div>
@@ -478,25 +478,45 @@
             <!-- Rent Results -->
             <div id="rent-results">
                 <div class="card">
-                    <h2>💰 Renting Budget Breakdown</h2>
+                    <h2>💰 RENTING BREAKDOWN</h2>
                     
                     <div class="expense-item">
                         <span>Monthly Income</span>
                         <strong id="display-income-rent">1,725 JOD</strong>
                     </div>
                     
-                    <h3>Expenses:</h3>
+                    <h3>EXPENSES:</h3>
                     <div class="expense-item">
                         <span>Rent</span>
                         <span id="display-rent">400 JOD</span>
                     </div>
                     <div class="expense-item">
-                        <span>Bills & Utilities</span>
+                        <span>Bills (Electric, Wifi, Gas)</span>
                         <span id="display-bills-rent">110 JOD</span>
                     </div>
                     <div class="expense-item">
-                        <span>Other Expenses</span>
-                        <span id="display-other-rent">649 JOD</span>
+                        <span>Subscriptions</span>
+                        <span id="display-subscriptions-rent">26 JOD</span>
+                    </div>
+                    <div class="expense-item">
+                        <span>Food & Groceries</span>
+                        <span id="display-food-rent">70 JOD</span>
+                    </div>
+                    <div class="expense-item">
+                        <span>Phone</span>
+                        <span id="display-phone-rent">12 JOD</span>
+                    </div>
+                    <div class="expense-item">
+                        <span>Social</span>
+                        <span id="display-social-rent">30 JOD</span>
+                    </div>
+                    <div class="expense-item">
+                        <span>Haircut</span>
+                        <span id="display-haircut-rent">11 JOD</span>
+                    </div>
+                    <div class="expense-item">
+                        <span>Jam'iya</span>
+                        <span id="display-jamiya-rent">500 JOD</span>
                     </div>
                     
                     <div class="expense-item total">
@@ -506,9 +526,9 @@
                 </div>
 
                 <div class="savings-highlight">
-                    <h3>Monthly Savings (Renting)</h3>
+                    <h3>MONTHLY SAVINGS (RENTING)</h3>
                     <div class="amount" id="monthly-savings-rent">566 JOD</div>
-                    <div class="subtitle">Savings Rate: <span id="savings-rate-rent">33%</span></div>
+                    <div class="subtitle">SAVINGS RATE: <span id="savings-rate-rent">33%</span></div>
                 </div>
 
                 <div class="card">
@@ -787,7 +807,12 @@
             document.getElementById('display-income-rent').textContent = salary.toLocaleString() + ' JOD';
             document.getElementById('display-rent').textContent = rent + ' JOD';
             document.getElementById('display-bills-rent').textContent = bills + ' JOD';
-            document.getElementById('display-other-rent').textContent = otherExpenses + ' JOD';
+            document.getElementById('display-subscriptions-rent').textContent = subscriptions + ' JOD';
+            document.getElementById('display-food-rent').textContent = food + ' JOD';
+            document.getElementById('display-phone-rent').textContent = phone + ' JOD';
+            document.getElementById('display-social-rent').textContent = social + ' JOD';
+            document.getElementById('display-haircut-rent').textContent = haircut + ' JOD';
+            document.getElementById('display-jamiya-rent').textContent = jamiya + ' JOD';
             document.getElementById('display-total-rent').textContent = totalExpensesRent.toLocaleString() + ' JOD';
             document.getElementById('monthly-savings-rent').textContent = monthlySavingsRent.toLocaleString() + ' JOD';
             document.getElementById('savings-rate-rent').textContent = savingsRateRent + '%';
